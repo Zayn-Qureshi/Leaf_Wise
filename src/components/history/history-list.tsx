@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
-import { Leaf, Trash2, Calendar, AlertTriangle } from 'lucide-react';
+import { Leaf, Trash2, Calendar, Star, AlertTriangle } from 'lucide-react';
 
 import useLocalStorage from '@/hooks/use-local-storage';
 import { HISTORY_STORAGE_KEY } from '@/lib/constants';
@@ -22,13 +22,32 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 export default function HistoryList() {
   const [history, setHistory] = useLocalStorage<PlantScan[]>(HISTORY_STORAGE_KEY, []);
+  const { toast } = useToast();
 
   const handleDelete = (id: string) => {
     setHistory(prevHistory => prevHistory.filter(scan => scan.id !== id));
   };
+  
+  const toggleFavorite = (id: string) => {
+    const newHistory = history.map(scan => {
+      if (scan.id === id) {
+        const updatedScan = { ...scan, isFavorite: !scan.isFavorite };
+        toast({
+          title: updatedScan.isFavorite ? 'Added to Favorites' : 'Removed from Favorites',
+          description: `${updatedScan.commonName} has been ${updatedScan.isFavorite ? 'added to' : 'removed from'} your favorites.`,
+        });
+        return updatedScan;
+      }
+      return scan;
+    });
+    setHistory(newHistory);
+  };
+
 
   if (history.length === 0) {
     return (
@@ -47,7 +66,7 @@ export default function HistoryList() {
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {history.map(scan => (
         <Card key={scan.id} className="flex flex-col overflow-hidden shadow-md transition-shadow hover:shadow-xl">
-          <CardHeader className="p-0">
+          <CardHeader className="p-0 relative">
             <Link href={`/plant/${scan.id}`} className="block">
               <div className="aspect-square relative w-full">
                 <Image
@@ -59,6 +78,18 @@ export default function HistoryList() {
                 />
               </div>
             </Link>
+             <Button
+              variant="ghost"
+              size="icon"
+              className={cn(
+                "absolute top-2 right-2 h-9 w-9 rounded-full bg-black/30 text-white backdrop-blur-sm transition-colors hover:bg-black/50",
+                scan.isFavorite && "text-yellow-400"
+              )}
+              onClick={() => toggleFavorite(scan.id)}
+            >
+              <Star className={cn("h-5 w-5", scan.isFavorite && "fill-current")} />
+              <span className="sr-only">Toggle Favorite</span>
+            </Button>
           </CardHeader>
           <CardContent className="flex-grow p-4">
             <Badge variant="secondary" className="mb-2">

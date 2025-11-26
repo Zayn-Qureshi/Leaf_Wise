@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, HelpCircle, Leaf, Percent, BrainCircuit, Type, ShieldAlert, GitCommitHorizontal, Lightbulb } from 'lucide-react';
+import { ArrowLeft, Calendar, HelpCircle, Leaf, Percent, BrainCircuit, Type, ShieldAlert, GitCommitHorizontal, Lightbulb, Star } from 'lucide-react';
 import { format } from 'date-fns';
 
 import useLocalStorage from '@/hooks/use-local-storage';
@@ -17,6 +17,8 @@ import CareSummary from './care-summary';
 import RelatedPlants from './related-plants';
 import { Badge } from '../ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
+import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 
 function InfoRow({ icon, label, value }: { icon: React.ReactNode; label: string; value?: string }) {
   if (!value) return null;
@@ -63,13 +65,31 @@ function Suggestions({ suggestions }: { suggestions: PlantSuggestion[] }) {
 }
 
 export default function PlantDetailsView({ id }: { id: string }) {
-  const [history] = useLocalStorage<PlantScan[]>(HISTORY_STORAGE_KEY, []);
+  const [history, setHistory] = useLocalStorage<PlantScan[]>(HISTORY_STORAGE_KEY, []);
   const [scan, setScan] = useState<PlantScan | null | undefined>(undefined);
+  const { toast } = useToast();
 
   useEffect(() => {
     const foundScan = history.find(s => s.id === id);
     setScan(foundScan || null);
   }, [id, history]);
+
+  const toggleFavorite = () => {
+    if (!scan) return;
+    const newHistory = history.map(s => {
+      if (s.id === id) {
+        const updatedScan = { ...s, isFavorite: !s.isFavorite };
+        toast({
+          title: updatedScan.isFavorite ? 'Added to Favorites' : 'Removed from Favorites',
+          description: `${updatedScan.commonName} has been ${updatedScan.isFavorite ? 'added to' : 'removed from'} your favorites.`,
+        });
+        return updatedScan;
+      }
+      return s;
+    });
+    setHistory(newHistory);
+  };
+
 
   if (scan === undefined) {
     return (
@@ -97,11 +117,20 @@ export default function PlantDetailsView({ id }: { id: string }) {
 
   return (
     <div className="container mx-auto max-w-5xl px-4 py-8">
-      <div className="mb-6">
+      <div className="mb-6 flex justify-between items-center">
         <Button asChild variant="outline">
           <Link href="/history">
             <ArrowLeft className="mr-2 h-4 w-4" /> Back to History
           </Link>
+        </Button>
+        <Button
+          variant="outline"
+          size="lg"
+          onClick={toggleFavorite}
+          className={cn(scan.isFavorite && "bg-yellow-400/10 border-yellow-500 text-yellow-600 hover:bg-yellow-400/20")}
+        >
+          <Star className={cn("mr-2 h-5 w-5", scan.isFavorite && "fill-current text-yellow-500")} />
+          {scan.isFavorite ? 'Favorite' : 'Add to Favorites'}
         </Button>
       </div>
       
