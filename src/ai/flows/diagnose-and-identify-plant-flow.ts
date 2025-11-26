@@ -24,6 +24,10 @@ const DiagnoseAndIdentifyPlantOutputSchema = z.object({
     plantType: z.string().describe("The plant's category (e.g., Indoor, Outdoor, Tree, Shrub, Flower)."),
     toxicity: z.string().describe("Information on the plant's toxicity to humans and pets. State if it's non-toxic."),
     growthHabit: z.string().describe("The typical growth habit of the plant (e.g., Bushy, Vining, Upright)."),
+    origin: z.string().describe("The geographical origin or native region of the plant."),
+    floweringPeriod: z.string().describe("The typical time of year the plant is expected to flower, if applicable."),
+    propagationTips: z.string().describe("Tips on how to propagate the plant."),
+    funFact: z.string().describe("An interesting and fun fact about the plant."),
 });
 export type DiagnoseAndIdentifyPlantOutput = z.infer<typeof DiagnoseAndIdentifyPlantOutputSchema>;
 
@@ -39,6 +43,10 @@ const prompt = ai.definePrompt({
     2. The plant's type or category (e.g., Indoor, Outdoor, Tree, Shrub, Flower).
     3. Toxicity information for pets and humans.
     4. The plant's typical growth habit (e.g., Bushy, Vining, Upright).
+    5. The geographical origin of the plant.
+    6. The plant's typical flowering period.
+    7. Tips on how to propagate the plant.
+    8. A fun, interesting fact about the plant.
 
     For the health assessment, assume the plant is healthy unless common issues for this species are obvious.
     `,

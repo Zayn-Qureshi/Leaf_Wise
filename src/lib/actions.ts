@@ -82,5 +82,9 @@ export async function identifyPlant(
     toxicity: aiResult.toxicity,
     growthHabit: aiResult.growthHabit,
     suggestions,
+    origin: aiResult.origin,
+    floweringPeriod: aiResult.floweringPeriod,
+    propagationTips: aiResult.propagationTips,
+    funFact: aiResult.funFact,
   };
 }

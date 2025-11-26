@@ -26,4 +26,8 @@ export interface PlantScan {
   growthHabit?: string;
   careSummary?: string;
   suggestions?: PlantSuggestion[];
+  origin?: string;
+  floweringPeriod?: string;
+  propagationTips?: string;
+  funFact?: string;
 }

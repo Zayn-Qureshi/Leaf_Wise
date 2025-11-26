@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, HelpCircle, Leaf, Percent, BrainCircuit, Type, ShieldAlert, GitCommitHorizontal, Lightbulb, Star, Notebook, Loader2, Droplets } from 'lucide-react';
+import { ArrowLeft, Calendar, HelpCircle, Leaf, Percent, BrainCircuit, Type, ShieldAlert, GitCommitHorizontal, Lightbulb, Star, Notebook, Loader2, Droplets, Globe, Flower, Beaker, StarIcon } from 'lucide-react';
 import { format, addDays } from 'date-fns';
 
 import useLocalStorage from '@/hooks/use-local-storage';
@@ -322,6 +322,26 @@ export default function PlantDetailsView({ id }: { id: string }) {
               <InfoRow icon={<Type className="h-5 w-5" />} label="Plant Type" value={scan.plantType} />
               <InfoRow icon={<GitCommitHorizontal className="h-5 w-5" />} label="Growth Habit" value={scan.growthHabit} />
               <InfoRow icon={<ShieldAlert className="h-5 w-5" />} label="Toxicity" value={scan.toxicity} />
+              <InfoRow icon={<Globe className="h-5 w-5" />} label="Origin" value={scan.origin} />
+              <InfoRow icon={<Flower className="h-5 w-5" />} label="Flowering Period" value={scan.floweringPeriod} />
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-xl"><Beaker className="text-primary"/> Propagation</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <p className="text-muted-foreground">{scan.propagationTips}</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-accent/10 border-accent/30">
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-xl text-accent/90"><StarIcon className="text-accent"/> Fun Fact</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <p className="text-accent/90 font-medium">{scan.funFact}</p>
             </CardContent>
           </Card>
 
