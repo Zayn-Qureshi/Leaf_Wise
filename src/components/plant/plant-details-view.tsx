@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, HelpCircle, Leaf, Percent, BrainCircuit, Type, ShieldAlert, GitCommitHorizontal, Lightbulb, Star, Notebook, Loader2, Droplets, Globe, Flower, Beaker, StarIcon, Share2 } from 'lucide-react';
+import { ArrowLeft, Calendar, HelpCircle, Leaf, Percent, BrainCircuit, Type, ShieldAlert, GitCommitHorizontal, Lightbulb, Star, Notebook, Loader2, Droplets, Globe, Flower, Beaker, StarIcon, Share2, ShoppingCart, MapPin } from 'lucide-react';
 import { format, addDays } from 'date-fns';
 
 import useLocalStorage from '@/hooks/use-local-storage';
@@ -182,6 +182,11 @@ export default function PlantDetailsView({ id }: { id: string }) {
     }
   };
 
+  const openGoogleMaps = () => {
+    const query = "plant nursery near me";
+    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+    window.open(url, '_blank');
+  };
 
   if (scan === undefined) {
     return (
@@ -240,6 +245,38 @@ export default function PlantDetailsView({ id }: { id: string }) {
             <div className="aspect-square relative w-full">
               <Image src={scan.image} alt={scan.commonName} fill style={{ objectFit: 'cover' }} />
             </div>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xl">
+                <ShoppingCart className="text-primary"/>
+                Shop for Supplies
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+               <p className="text-sm text-muted-foreground">
+                Find supplies for your {scan.commonName} from online retailers or local shops.
+              </p>
+               <div className="grid grid-cols-2 gap-2">
+                  <Button variant="outline" asChild>
+                    <a href={`https://www.google.com/search?q=buy+${encodeURIComponent(scan.commonName)}+plant`} target="_blank" rel="noopener noreferrer">Buy this Plant</a>
+                  </Button>
+                  <Button variant="outline" asChild>
+                    <a href={`https://www.google.com/search?q=buy+potting+soil+for+${encodeURIComponent(scan.commonName)}`} target="_blank" rel="noopener noreferrer">Potting Soil</a>
+                  </Button>
+                  <Button variant="outline" asChild>
+                     <a href={`https://www.google.com/search?q=buy+fertilizer+for+${encodeURIComponent(scan.commonName)}`} target="_blank" rel="noopener noreferrer">Fertilizer</a>
+                  </Button>
+                   <Button variant="outline" asChild>
+                    <a href={`https://www.google.com/search?q=buy+pots+for+${encodeURIComponent(scan.commonName)}`} target="_blank" rel="noopener noreferrer">Pots</a>
+                  </Button>
+               </div>
+               <Button onClick={openGoogleMaps} className="w-full">
+                  <MapPin className="mr-2 h-4 w-4" />
+                  Find Nearby Nurseries
+               </Button>
+            </CardContent>
           </Card>
 
           <Card>
@@ -407,3 +444,5 @@ const InfoCardSkeleton = ({title}: {title: string}) => (
     </div>
   </div>
 );
+
+    
