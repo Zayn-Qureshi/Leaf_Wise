@@ -14,6 +14,7 @@ const ptSans = PT_Sans({
 export const metadata: Metadata = {
   title: 'LeafWise',
   description: 'Identify plants with a snap!',
+  manifest: '/manifest.json',
 };
 
 export default function RootLayout({
