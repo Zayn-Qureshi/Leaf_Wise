@@ -13,7 +13,6 @@ import useLocalStorage from '@/hooks/use-local-storage';
 import { identifyPlant } from '@/lib/actions';
 import type { PlantScan } from '@/lib/types';
 import { HISTORY_STORAGE_KEY } from '@/lib/constants';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function PlantIdentifier() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -23,8 +22,6 @@ export default function PlantIdentifier() {
   const router = useRouter();
   const { toast } = useToast();
   const [, setHistory] = useLocalStorage<PlantScan[]>(HISTORY_STORAGE_KEY, []);
-
-  const heroImage = PlaceHolderImages.find(img => img.id === 'home-hero');
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -81,7 +78,7 @@ export default function PlantIdentifier() {
   };
 
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className="container mx-auto max-w-2xl px-4">
       <Card className="overflow-hidden shadow-lg">
         <CardHeader className="bg-primary/5 p-4 sm:p-6">
           <div className="text-center">
@@ -129,10 +126,8 @@ export default function PlantIdentifier() {
             </div>
           ) : (
             <div
-              className="relative flex flex-col items-center justify-center space-y-6 rounded-lg border-2 border-dashed border-gray-300 p-8 sm:p-12 text-center transition-colors hover:border-primary/50 bg-cover bg-center"
-              style={{ backgroundImage: heroImage ? `url(${heroImage.imageUrl})` : '' }}
+              className="relative flex flex-col items-center justify-center space-y-6 rounded-lg border-2 border-dashed border-gray-300 p-8 sm:p-12 text-center transition-colors hover:border-primary/50"
             >
-              <div className="absolute inset-0 bg-background/80 backdrop-blur-sm rounded-lg"></div>
               <div className="relative z-10">
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button onClick={() => fileInputRef.current?.click()} size="lg" className="flex-1">
