@@ -48,7 +48,7 @@ export default function HistoryList() {
       {history.map(scan => (
         <Card key={scan.id} className="flex flex-col overflow-hidden shadow-md transition-shadow hover:shadow-xl">
           <CardHeader className="p-0">
-            <Link href={`/plant/${scan.id}`} className="block" prefetch={false}>
+            <Link href={`/plant/${scan.id}`} className="block">
               <div className="aspect-square relative w-full">
                 <Image
                   src={scan.image}
@@ -65,7 +65,7 @@ export default function HistoryList() {
               Confidence: {Math.round(scan.confidence * 100)}%
             </Badge>
             <CardTitle className="text-xl font-bold text-primary">
-              <Link href={`/plant/${scan.id}`} className="hover:underline" prefetch={false}>
+              <Link href={`/plant/${scan.id}`} className="hover:underline">
                 {scan.commonName}
               </Link>
             </CardTitle>

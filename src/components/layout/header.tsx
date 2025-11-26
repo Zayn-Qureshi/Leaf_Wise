@@ -34,7 +34,6 @@ export function Header() {
           isMobile && 'text-base'
         )}
         onClick={() => isMobile && setIsMobileMenuOpen(false)}
-        prefetch={false}
       >
         <Icon className="h-5 w-5" />
         {label}
