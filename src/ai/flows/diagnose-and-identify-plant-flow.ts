@@ -58,8 +58,8 @@ async function identifyWithPlantNet(
   
       if (!response.ok) {
         const errorText = await response.text();
-        console.error(`Pl@ntNet API Error: ${errorText}`);
-        throw new Error(`Pl@ntNet API request failed: ${response.statusText}`);
+        console.error(`Pl@ntNet API Error: ${response.status} ${response.statusText}`, errorText);
+        throw new Error(`Pl@ntNet API request failed: ${response.statusText}. ${errorText}`);
       }
   
       const data = await response.json();
@@ -74,9 +74,9 @@ async function identifyWithPlantNet(
         scientificName: bestMatch.species.scientificNameWithoutAuthor,
         confidence: bestMatch.score,
       };
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error identifying with Pl@ntNet:', error);
-      throw new Error('Failed to identify plant with Pl@ntNet.');
+      throw new Error(`Failed to identify plant with Pl@ntNet: ${error.message}`);
     }
 }
 
@@ -102,12 +102,11 @@ const diagnoseAndIdentifyPlantFlow = ai.defineFlow(
   async (input) => {
     const identificationResult = await identifyWithPlantNet(input.photoDataUri);
 
-    const diagnosisResult = await prompt({
+    const { output } = await prompt({
         plantName: identificationResult.commonName,
         scientificName: identificationResult.scientificName,
     });
 
-    const { output } = diagnosisResult;
     if (!output) {
       throw new Error('Failed to get diagnosis from the AI model.');
     }
