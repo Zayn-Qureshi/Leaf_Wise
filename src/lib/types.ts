@@ -13,6 +13,7 @@ export interface PlantScan {
   confidence: number;
   careTips: string;
   isFavorite?: boolean;
+  notes?: string;
   // AI generated fields
   plantType?: string;
   toxicity?: string;

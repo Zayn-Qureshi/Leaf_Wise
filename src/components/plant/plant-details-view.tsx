@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, HelpCircle, Leaf, Percent, BrainCircuit, Type, ShieldAlert, GitCommitHorizontal, Lightbulb, Star } from 'lucide-react';
+import { ArrowLeft, Calendar, HelpCircle, Leaf, Percent, BrainCircuit, Type, ShieldAlert, GitCommitHorizontal, Lightbulb, Star, Notebook } from 'lucide-react';
 import { format } from 'date-fns';
 
 import useLocalStorage from '@/hooks/use-local-storage';
@@ -19,6 +19,7 @@ import { Badge } from '../ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { Textarea } from '../ui/textarea';
 
 function InfoRow({ icon, label, value }: { icon: React.ReactNode; label: string; value?: string }) {
   if (!value) return null;
@@ -67,11 +68,15 @@ function Suggestions({ suggestions }: { suggestions: PlantSuggestion[] }) {
 export default function PlantDetailsView({ id }: { id: string }) {
   const [history, setHistory] = useLocalStorage<PlantScan[]>(HISTORY_STORAGE_KEY, []);
   const [scan, setScan] = useState<PlantScan | null | undefined>(undefined);
+  const [notes, setNotes] = useState('');
   const { toast } = useToast();
 
   useEffect(() => {
     const foundScan = history.find(s => s.id === id);
     setScan(foundScan || null);
+    if (foundScan) {
+      setNotes(foundScan.notes || '');
+    }
   }, [id, history]);
 
   const toggleFavorite = () => {
@@ -88,6 +93,21 @@ export default function PlantDetailsView({ id }: { id: string }) {
       return s;
     });
     setHistory(newHistory);
+  };
+  
+  const handleSaveNotes = () => {
+    if (!scan) return;
+    const newHistory = history.map(s => {
+      if (s.id === id) {
+        return { ...s, notes };
+      }
+      return s;
+    });
+    setHistory(newHistory);
+    toast({
+      title: 'Notes Saved',
+      description: `Your notes for ${scan.commonName} have been updated.`,
+    });
   };
 
 
@@ -140,6 +160,24 @@ export default function PlantDetailsView({ id }: { id: string }) {
             <div className="aspect-square relative w-full">
               <Image src={scan.image} alt={scan.commonName} fill style={{ objectFit: 'cover' }} />
             </div>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xl">
+                <Notebook className="text-primary"/>
+                Personal Notes
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Textarea
+                placeholder="Add your personal notes here..."
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                rows={5}
+              />
+              <Button onClick={handleSaveNotes}>Save Notes</Button>
+            </CardContent>
           </Card>
           
           <Card>
