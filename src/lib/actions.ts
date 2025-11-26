@@ -65,13 +65,16 @@ export async function identifyPlant(
     confidence: bestMatch.score,
   };
 
-  const result = await diagnoseAndIdentifyPlant({
+  const aiResult = await diagnoseAndIdentifyPlant({
     commonName: identification.commonName,
     scientificName: identification.scientificName,
   });
 
   return {
     ...identification,
-    careTips: result.diagnosis,
+    careTips: aiResult.diagnosis,
+    plantType: aiResult.plantType,
+    toxicity: aiResult.toxicity,
+    growthHabit: aiResult.growthHabit,
   };
 }

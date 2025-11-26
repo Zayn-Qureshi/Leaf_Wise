@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, HelpCircle, Leaf, Percent, BrainCircuit } from 'lucide-react';
+import { ArrowLeft, Calendar, HelpCircle, Leaf, Percent, BrainCircuit, Type, ShieldAlert, GitCommitHorizontal } from 'lucide-react';
 import { format } from 'date-fns';
 
 import useLocalStorage from '@/hooks/use-local-storage';
@@ -15,6 +15,20 @@ import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
 import CareSummary from './care-summary';
 import RelatedPlants from './related-plants';
+import { Badge } from '../ui/badge';
+
+function InfoRow({ icon, label, value }: { icon: React.ReactNode; label: string; value?: string }) {
+  if (!value) return null;
+  return (
+    <div className="flex items-start gap-3">
+      <div className="text-primary">{icon}</div>
+      <div>
+        <p className="font-semibold text-foreground/90">{label}</p>
+        <p className="text-muted-foreground">{value}</p>
+      </div>
+    </div>
+  );
+}
 
 export default function PlantDetailsView({ id }: { id: string }) {
   const [history] = useLocalStorage<PlantScan[]>(HISTORY_STORAGE_KEY, []);
@@ -103,6 +117,20 @@ export default function PlantDetailsView({ id }: { id: string }) {
                 </div>
                 <Progress value={confidenceValue} aria-label={`${confidenceValue}% confidence`} />
               </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xl">
+                <Leaf className="text-primary"/>
+                Plant Details
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <InfoRow icon={<Type className="h-5 w-5" />} label="Plant Type" value={scan.plantType} />
+              <InfoRow icon={<GitCommitHorizontal className="h-5 w-5" />} label="Growth Habit" value={scan.growthHabit} />
+              <InfoRow icon={<ShieldAlert className="h-5 w-5" />} label="Toxicity" value={scan.toxicity} />
             </CardContent>
           </Card>
 
