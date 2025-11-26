@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, Leaf, History, Settings, X, Compass } from 'lucide-react';
+import { Menu, Leaf, History, Settings, X, Compass, Heart } from 'lucide-react';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 const navItems = [
   { href: '/', label: 'Home', icon: Leaf },
   { href: '/discover', label: 'Discover', icon: Compass },
+  { href: '/my-plants', label: 'My Plants', icon: Heart },
   { href: '/history', label: 'History', icon: History },
   { href: '/settings', label: 'Settings', icon: Settings },
 ];
