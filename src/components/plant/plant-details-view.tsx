@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, HelpCircle, Leaf, Percent, BrainCircuit, Type, ShieldAlert, GitCommitHorizontal, Lightbulb, Star, Notebook, Loader2, Droplets, Globe, Flower, Beaker, StarIcon } from 'lucide-react';
+import { ArrowLeft, Calendar, HelpCircle, Leaf, Percent, BrainCircuit, Type, ShieldAlert, GitCommitHorizontal, Lightbulb, Star, Notebook, Loader2, Droplets, Globe, Flower, Beaker, StarIcon, Share2 } from 'lucide-react';
 import { format, addDays } from 'date-fns';
 
 import useLocalStorage from '@/hooks/use-local-storage';
@@ -154,6 +154,34 @@ export default function PlantDetailsView({ id }: { id: string }) {
     });
   };
 
+  const handleShare = async () => {
+    if (!scan) return;
+
+    const shareData = {
+      title: `Check out this plant: ${scan.commonName}`,
+      text: `I identified a ${scan.commonName} (${scan.scientificName}) using LeafWise! Here's a fun fact: ${scan.funFact}`,
+      url: window.location.href,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+        toast({ title: 'Shared successfully!' });
+      } else {
+        // Fallback for browsers that don't support the Web Share API
+        await navigator.clipboard.writeText(`${shareData.title}\n${shareData.text}\n${shareData.url}`);
+        toast({ title: 'Copied to clipboard!', description: 'Plant details copied for easy sharing.' });
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Sharing failed',
+        description: 'Could not share the plant details at this time.',
+      });
+    }
+  };
+
 
   if (scan === undefined) {
     return (
@@ -181,21 +209,29 @@ export default function PlantDetailsView({ id }: { id: string }) {
 
   return (
     <div className="container mx-auto max-w-5xl px-4 py-8">
-      <div className="mb-6 flex justify-between items-center">
+      <div className="mb-6 flex flex-wrap gap-2 justify-between items-center">
         <Button asChild variant="outline">
           <Link href="/history">
             <ArrowLeft className="mr-2 h-4 w-4" /> Back to History
           </Link>
         </Button>
-        <Button
-          variant="outline"
-          size="lg"
-          onClick={toggleFavorite}
-          className={cn(scan.isFavorite && "bg-yellow-400/10 border-yellow-500 text-yellow-600 hover:bg-yellow-400/20")}
-        >
-          <Star className={cn("mr-2 h-5 w-5", scan.isFavorite && "fill-current text-yellow-500")} />
-          {scan.isFavorite ? 'Favorite' : 'Add to Favorites'}
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={handleShare}
+          >
+            <Share2 className="mr-2 h-5 w-5" />
+            Share
+          </Button>
+          <Button
+            variant="outline"
+            onClick={toggleFavorite}
+            className={cn(scan.isFavorite && "bg-yellow-400/10 border-yellow-500 text-yellow-600 hover:bg-yellow-400/20")}
+          >
+            <Star className={cn("mr-2 h-5 w-5", scan.isFavorite && "fill-current text-yellow-500")} />
+            {scan.isFavorite ? 'Favorite' : 'Add to Favorites'}
+          </Button>
+        </div>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
