@@ -4,6 +4,11 @@ export interface PlantSuggestion {
   confidence: number;
 }
 
+export interface Reminder {
+  frequency: number; // in days
+  lastWatered: number; // timestamp
+}
+
 export interface PlantScan {
   id: string;
   image: string; // data URI
@@ -14,6 +19,7 @@ export interface PlantScan {
   careTips: string;
   isFavorite?: boolean;
   notes?: string;
+  reminder?: Reminder;
   // AI generated fields
   plantType?: string;
   toxicity?: string;

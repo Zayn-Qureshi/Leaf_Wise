@@ -3,11 +3,11 @@
 import { Suspense, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, HelpCircle, Leaf, Percent, BrainCircuit, Type, ShieldAlert, GitCommitHorizontal, Lightbulb, Star, Notebook, Loader2 } from 'lucide-react';
-import { format } from 'date-fns';
+import { ArrowLeft, Calendar, HelpCircle, Leaf, Percent, BrainCircuit, Type, ShieldAlert, GitCommitHorizontal, Lightbulb, Star, Notebook, Loader2, Droplets } from 'lucide-react';
+import { format, addDays } from 'date-fns';
 
 import useLocalStorage from '@/hooks/use-local-storage';
-import type { PlantScan, PlantSuggestion } from '@/lib/types';
+import type { PlantScan, PlantSuggestion, Reminder } from '@/lib/types';
 import { HISTORY_STORAGE_KEY } from '@/lib/constants';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -20,6 +20,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '..
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Textarea } from '../ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
 function InfoRow({ icon, label, value }: { icon: React.ReactNode; label: string; value?: string }) {
   if (!value) return null;
@@ -100,7 +101,6 @@ export default function PlantDetailsView({ id }: { id: string }) {
     if (!scan) return;
     setIsSaving(true);
     
-    // Simulate a short delay for better UX
     setTimeout(() => {
       const newHistory = history.map(s => {
         if (s.id === id) {
@@ -115,6 +115,43 @@ export default function PlantDetailsView({ id }: { id: string }) {
         description: `Your notes for ${scan.commonName} have been updated.`,
       });
     }, 500);
+  };
+  
+  const handleSetReminder = (frequency: number) => {
+    if (!scan) return;
+
+    if (Notification.permission !== 'granted') {
+      toast({
+        variant: 'destructive',
+        title: 'Notifications not enabled',
+        description: 'Please enable notifications in settings to set reminders.',
+      });
+      return;
+    }
+
+    const newReminder: Reminder = { frequency, lastWatered: Date.now() };
+
+    const newHistory = history.map(s =>
+      s.id === id ? { ...s, reminder: newReminder } : s
+    );
+    setHistory(newHistory);
+    
+    const nextWateringDate = addDays(new Date(), frequency);
+
+    // This is a simplified client-side notification.
+    // A robust solution would use a service worker with push notifications.
+    setTimeout(() => {
+        new Notification(`Time to water your ${scan.commonName}!`, {
+            body: `It's been ${frequency} days. Give your plant some love.`,
+            icon: scan.image,
+        });
+    }, nextWateringDate.getTime() - Date.now());
+
+
+    toast({
+      title: 'Reminder Set!',
+      description: `You'll be reminded to water your ${scan.commonName} every ${frequency} days.`,
+    });
   };
 
 
@@ -167,6 +204,36 @@ export default function PlantDetailsView({ id }: { id: string }) {
             <div className="aspect-square relative w-full">
               <Image src={scan.image} alt={scan.commonName} fill style={{ objectFit: 'cover' }} />
             </div>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xl">
+                <Droplets className="text-primary"/>
+                Watering Reminder
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-muted-foreground text-sm">
+                Set a reminder to get notified when it's time to water this plant.
+              </p>
+              <Select onValueChange={(value) => handleSetReminder(Number(value))} defaultValue={scan.reminder?.frequency.toString()}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Set reminder" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">Every day</SelectItem>
+                  <SelectItem value="3">Every 3 days</SelectItem>
+                  <SelectItem value="7">Every 7 days</SelectItem>
+                  <SelectItem value="14">Every 14 days</SelectItem>
+                </SelectContent>
+              </Select>
+               {scan.reminder && (
+                 <p className="text-sm text-green-600">
+                    Reminder set for every {scan.reminder.frequency} days.
+                 </p>
+               )}
+            </CardContent>
           </Card>
 
           <Card>

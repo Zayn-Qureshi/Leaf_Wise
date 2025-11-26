@@ -29,7 +29,7 @@ import useLocalStorage from '@/hooks/use-local-storage';
 import { useToast } from '@/hooks/use-toast';
 import { HISTORY_STORAGE_KEY } from '@/lib/constants';
 import type { PlantScan } from '@/lib/types';
-import { AlertTriangle, HelpCircle, Info, Trash2 } from 'lucide-react';
+import { AlertTriangle, Bell, HelpCircle, Info, Trash2 } from 'lucide-react';
 
 function AboutSection() {
   return (
@@ -100,6 +100,39 @@ export default function SettingsPage() {
     });
   };
 
+  const handleRequestNotificationPermission = async () => {
+    if (!('Notification' in window)) {
+      toast({
+        variant: 'destructive',
+        title: 'Unsupported Browser',
+        description: 'This browser does not support desktop notifications.',
+      });
+      return;
+    }
+
+    if (Notification.permission === 'granted') {
+        toast({
+            title: 'Permissions Granted',
+            description: 'You have already granted notification permissions.',
+        });
+        return;
+    }
+
+    const permission = await Notification.requestPermission();
+    if (permission === 'granted') {
+      toast({
+        title: 'Permissions Granted',
+        description: 'You will now receive watering reminders.',
+      });
+    } else {
+        toast({
+            variant: 'destructive',
+            title: 'Permissions Denied',
+            description: 'You will not receive notifications unless you enable them in your browser settings.',
+        });
+    }
+  };
+
   return (
     <div className="container mx-auto max-w-2xl px-4 py-8">
       <div className="mb-8 text-center">
@@ -112,6 +145,29 @@ export default function SettingsPage() {
       </div>
 
       <div className="space-y-6">
+        <Card className="shadow-md">
+          <CardHeader>
+            <CardTitle>App Settings</CardTitle>
+            <CardDescription>
+              Configure notifications and other application preferences.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+             <div className="flex items-center justify-between rounded-lg border p-4">
+                <div>
+                    <h3 className="font-semibold">Enable Notifications</h3>
+                    <p className="text-sm text-muted-foreground">
+                    Allow the app to send you watering reminders.
+                    </p>
+                </div>
+                <Button onClick={handleRequestNotificationPermission}>
+                    <Bell className="mr-2 h-4 w-4" /> Allow
+                </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+
         <Card className="shadow-md">
           <CardHeader>
             <CardTitle>Data Management</CardTitle>
