@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, HelpCircle, Leaf, Percent, BrainCircuit, Type, ShieldAlert, GitCommitHorizontal, Lightbulb, Star, Notebook } from 'lucide-react';
+import { ArrowLeft, Calendar, HelpCircle, Leaf, Percent, BrainCircuit, Type, ShieldAlert, GitCommitHorizontal, Lightbulb, Star, Notebook, Loader2 } from 'lucide-react';
 import { format } from 'date-fns';
 
 import useLocalStorage from '@/hooks/use-local-storage';
@@ -69,6 +69,7 @@ export default function PlantDetailsView({ id }: { id: string }) {
   const [history, setHistory] = useLocalStorage<PlantScan[]>(HISTORY_STORAGE_KEY, []);
   const [scan, setScan] = useState<PlantScan | null | undefined>(undefined);
   const [notes, setNotes] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -97,17 +98,23 @@ export default function PlantDetailsView({ id }: { id: string }) {
   
   const handleSaveNotes = () => {
     if (!scan) return;
-    const newHistory = history.map(s => {
-      if (s.id === id) {
-        return { ...s, notes };
-      }
-      return s;
-    });
-    setHistory(newHistory);
-    toast({
-      title: 'Notes Saved',
-      description: `Your notes for ${scan.commonName} have been updated.`,
-    });
+    setIsSaving(true);
+    
+    // Simulate a short delay for better UX
+    setTimeout(() => {
+      const newHistory = history.map(s => {
+        if (s.id === id) {
+          return { ...s, notes };
+        }
+        return s;
+      });
+      setHistory(newHistory);
+      setIsSaving(false);
+      toast({
+        title: 'Notes Saved',
+        description: `Your notes for ${scan.commonName} have been updated.`,
+      });
+    }, 500);
   };
 
 
@@ -171,12 +178,22 @@ export default function PlantDetailsView({ id }: { id: string }) {
             </CardHeader>
             <CardContent className="space-y-4">
               <Textarea
-                placeholder="Add your personal notes here..."
+                placeholder="Add your personal notes here... e.g., 'Watered on Monday', 'Moved to a sunnier spot'."
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={5}
+                disabled={isSaving}
               />
-              <Button onClick={handleSaveNotes}>Save Notes</Button>
+              <Button onClick={handleSaveNotes} disabled={isSaving}>
+                {isSaving ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  'Save Notes'
+                )}
+              </Button>
             </CardContent>
           </Card>
           
