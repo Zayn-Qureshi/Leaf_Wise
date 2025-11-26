@@ -58,7 +58,7 @@ export default function MyPlantsGrid() {
     setHistory(newHistory);
   };
 
-  const handlePlantAdded = (newPlant: Omit<PlantScan, 'id' | 'timestamp' | 'confidence'>) => {
+  const handlePlantAdded = (newPlant: Omit<PlantScan, 'id' | 'timestamp' | 'confidence' | 'isFavorite' | 'suggestions'>) => {
     const newScan: PlantScan = {
       id: crypto.randomUUID(),
       timestamp: Date.now(),

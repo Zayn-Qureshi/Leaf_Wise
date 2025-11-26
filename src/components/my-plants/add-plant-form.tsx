@@ -16,12 +16,15 @@ const formSchema = z.object({
   commonName: z.string().min(2, { message: 'Common name is required.' }),
   scientificName: z.string().optional(),
   image: z.string({ required_error: 'An image is required.' }),
-  careTips: z.string().optional(),
   notes: z.string().optional(),
+  careTips: z.string().optional(),
+  plantType: z.string().optional(),
+  toxicity: z.string().optional(),
+  growthHabit: z.string().optional(),
 });
 
 type AddPlantFormProps = {
-  onPlantAdded: (plant: Omit<PlantScan, 'id' | 'timestamp' | 'confidence'>) => void;
+  onPlantAdded: (plant: Omit<PlantScan, 'id' | 'timestamp' | 'confidence' | 'isFavorite' | 'suggestions'>) => void;
 };
 
 export function AddPlantForm({ onPlantAdded }: AddPlantFormProps) {
@@ -34,8 +37,11 @@ export function AddPlantForm({ onPlantAdded }: AddPlantFormProps) {
     defaultValues: {
       commonName: '',
       scientificName: '',
-      careTips: '',
       notes: '',
+      careTips: '',
+      plantType: '',
+      toxicity: '',
+      growthHabit: '',
     },
   });
 
@@ -63,7 +69,7 @@ export function AddPlantForm({ onPlantAdded }: AddPlantFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 max-h-[70vh] overflow-y-auto p-1">
         <FormField
           control={form.control}
           name="image"
@@ -118,9 +124,51 @@ export function AddPlantForm({ onPlantAdded }: AddPlantFormProps) {
           name="scientificName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Scientific Name (Optional)</FormLabel>
+              <FormLabel>Scientific Name</FormLabel>
               <FormControl>
                 <Input placeholder="e.g., Monstera deliciosa" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <FormField
+          control={form.control}
+          name="plantType"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Plant Type</FormLabel>
+              <FormControl>
+                <Input placeholder="e.g., Indoor, Flower" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="growthHabit"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Growth Habit</FormLabel>
+              <FormControl>
+                <Input placeholder="e.g., Bushy, Vining" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="toxicity"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Toxicity</FormLabel>
+              <FormControl>
+                <Input placeholder="e.g., Toxic to cats and dogs" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -132,7 +180,7 @@ export function AddPlantForm({ onPlantAdded }: AddPlantFormProps) {
           name="careTips"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Care Instructions (Optional)</FormLabel>
+              <FormLabel>Care Instructions</FormLabel>
               <FormControl>
                 <Textarea placeholder="e.g., Water every 1-2 weeks, allow soil to dry out." {...field} />
               </FormControl>
@@ -146,7 +194,7 @@ export function AddPlantForm({ onPlantAdded }: AddPlantFormProps) {
           name="notes"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Personal Notes (Optional)</FormLabel>
+              <FormLabel>Personal Notes</FormLabel>
               <FormControl>
                 <Textarea placeholder="e.g., Purchased from the local nursery on May 5th." {...field} />
               </FormControl>
