@@ -1,3 +1,9 @@
+export interface PlantSuggestion {
+  commonName: string;
+  scientificName: string;
+  confidence: number;
+}
+
 export interface PlantScan {
   id: string;
   image: string; // data URI
@@ -11,5 +17,5 @@ export interface PlantScan {
   toxicity?: string;
   growthHabit?: string;
   careSummary?: string;
-  suggestions?: string[];
+  suggestions?: PlantSuggestion[];
 }

@@ -3,11 +3,11 @@
 import { Suspense, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, HelpCircle, Leaf, Percent, BrainCircuit, Type, ShieldAlert, GitCommitHorizontal } from 'lucide-react';
+import { ArrowLeft, Calendar, HelpCircle, Leaf, Percent, BrainCircuit, Type, ShieldAlert, GitCommitHorizontal, Lightbulb } from 'lucide-react';
 import { format } from 'date-fns';
 
 import useLocalStorage from '@/hooks/use-local-storage';
-import type { PlantScan } from '@/lib/types';
+import type { PlantScan, PlantSuggestion } from '@/lib/types';
 import { HISTORY_STORAGE_KEY } from '@/lib/constants';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,6 +16,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import CareSummary from './care-summary';
 import RelatedPlants from './related-plants';
 import { Badge } from '../ui/badge';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 
 function InfoRow({ icon, label, value }: { icon: React.ReactNode; label: string; value?: string }) {
   if (!value) return null;
@@ -27,6 +28,37 @@ function InfoRow({ icon, label, value }: { icon: React.ReactNode; label: string;
         <p className="text-muted-foreground">{value}</p>
       </div>
     </div>
+  );
+}
+
+function Suggestions({ suggestions }: { suggestions: PlantSuggestion[] }) {
+  if (!suggestions || suggestions.length === 0) return null;
+  
+  return (
+    <Accordion type="single" collapsible>
+        <AccordionItem value="item-1">
+        <AccordionTrigger className="font-semibold text-lg text-foreground/80">
+            <div className="flex items-center gap-2">
+                <Lightbulb className="h-5 w-5 text-accent"/>
+                Other Possible Matches
+            </div>
+        </AccordionTrigger>
+        <AccordionContent>
+            <ul className="space-y-3">
+            {suggestions.map((suggestion, index) => (
+                <li key={index} className="p-3 rounded-md bg-muted/30">
+                    <p className="font-semibold text-primary">{suggestion.commonName}</p>
+                    <p className="text-sm text-muted-foreground italic">{suggestion.scientificName}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                        <Progress value={suggestion.confidence * 100} className="w-24 h-2" />
+                        <span className="text-xs text-muted-foreground">{Math.round(suggestion.confidence * 100)}% match</span>
+                    </div>
+                </li>
+            ))}
+            </ul>
+        </AccordionContent>
+        </AccordionItem>
+    </Accordion>
   );
 }
 
@@ -119,6 +151,14 @@ export default function PlantDetailsView({ id }: { id: string }) {
               </div>
             </CardContent>
           </Card>
+          
+          {scan.suggestions && scan.suggestions.length > 0 && (
+            <Card>
+              <CardContent className="p-6">
+                <Suggestions suggestions={scan.suggestions} />
+              </CardContent>
+            </Card>
+          )}
 
           <Card>
             <CardHeader>
