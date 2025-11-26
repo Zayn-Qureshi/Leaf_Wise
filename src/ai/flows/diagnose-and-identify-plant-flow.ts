@@ -45,32 +45,43 @@ async function identifyWithPlantNet(
     }
   
     const apiUrl = `https://my-api.plantnet.org/v2/identify/all?api-key=${apiKey}`;
-  
-    const formData = new FormData();
-    const blob = await fetch(imageDataUri).then(res => res.blob());
-    formData.append('images', blob, 'plant.jpg');
-  
+    
+    // Extract base64 data from the data URI
+    const base64Data = imageDataUri.split(',')[1];
+    if (!base64Data) {
+        throw new Error('Invalid image data URI provided.');
+    }
+
+    const requestBody = {
+        images: [base64Data],
+        // You can specify which parts of the plant are visible, e.g., ['leaf', 'flower']
+        // organs: ['leaf'] 
+    };
+
     try {
       const response = await fetch(apiUrl, {
         method: 'POST',
-        body: formData,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
       });
   
       if (!response.ok) {
         const errorText = await response.text();
         console.error(`Pl@ntNet API Error: ${response.status} ${response.statusText}`, errorText);
-        throw new Error(`Pl@ntNet API request failed: ${response.statusText}. ${errorText}`);
+        throw new Error(`Pl@ntNet API request failed: ${response.statusText}. Response: ${errorText}`);
       }
   
       const data = await response.json();
-      const bestMatch = data.bestMatch;
+      const bestMatch = data.results?.[0];
   
       if (!bestMatch) {
         throw new Error('No plant could be identified from the image.');
       }
   
       return {
-        commonName: bestMatch.commonNames?.[0] || 'Unknown',
+        commonName: bestMatch.species.commonNames?.[0] || 'Unknown',
         scientificName: bestMatch.species.scientificNameWithoutAuthor,
         confidence: bestMatch.score,
       };
