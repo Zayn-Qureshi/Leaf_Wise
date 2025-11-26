@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, Leaf, History, Settings, X } from 'lucide-react';
+import { Menu, Leaf, History, Settings, X, Compass } from 'lucide-react';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 
 const navItems = [
   { href: '/', label: 'Home', icon: Leaf },
+  { href: '/discover', label: 'Discover', icon: Compass },
   { href: '/history', label: 'History', icon: History },
   { href: '/settings', label: 'Settings', icon: Settings },
 ];
@@ -62,12 +63,12 @@ export function Header() {
                 <span className="sr-only">Open menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-full max-w-xs bg-background">
+            <SheetContent side="right" className="w-full max-w-xs bg-background p-0">
               <div className="flex h-full flex-col">
                 <div className="flex items-center justify-between border-b p-4">
                   <Logo />
                   <SheetTrigger asChild>
-                     <Button variant="ghost" size="icon">
+                     <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)}>
                         <X className="h-6 w-6" />
                         <span className="sr-only">Close menu</span>
                      </Button>
