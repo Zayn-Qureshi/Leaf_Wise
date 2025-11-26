@@ -6,9 +6,10 @@ import { Menu, Leaf, History, Settings, X, Compass, Heart } from 'lucide-react';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import { Logo } from './logo';
 import { cn } from '@/lib/utils';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 const navItems = [
   { href: '/', label: 'Home', icon: Leaf },
@@ -64,16 +65,22 @@ export function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-full max-w-xs bg-background p-0">
-              <div className="flex h-full flex-col">
-                <div className="flex items-center justify-between border-b p-4">
+               <SheetHeader className="flex flex-row items-center justify-between border-b p-4">
                   <Logo />
-                  <SheetTrigger asChild>
+                  <SheetClose asChild>
                      <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)}>
                         <X className="h-6 w-6" />
                         <span className="sr-only">Close menu</span>
                      </Button>
-                  </SheetTrigger>
-                </div>
+                  </SheetClose>
+                  <VisuallyHidden>
+                    <SheetTitle>Main Menu</SheetTitle>
+                    <SheetDescription>
+                      Navigate through the LeafWise application.
+                    </SheetDescription>
+                  </VisuallyHidden>
+                </SheetHeader>
+              <div className="flex h-full flex-col">
                 <nav className="flex flex-col gap-4 p-4">
                   {navItems.map(item => (
                     <NavLink key={item.href} {...item} isMobile />
