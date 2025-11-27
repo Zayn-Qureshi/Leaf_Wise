@@ -452,5 +452,3 @@ const InfoCardSkeleton = ({title}: {title: string}) => (
 );
 
     
-
-    
