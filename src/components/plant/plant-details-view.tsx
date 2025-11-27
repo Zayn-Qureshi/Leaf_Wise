@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, HelpCircle, Leaf, Percent, BrainCircuit, Type, ShieldAlert, GitCommitHorizontal, Lightbulb, Star, Notebook, Loader2, Droplets, Globe, Flower, Beaker, StarIcon, Share2 } from 'lucide-react';
+import { ArrowLeft, Calendar, HelpCircle, Leaf, Percent, BrainCircuit, Type, ShieldAlert, GitCommitHorizontal, Lightbulb, Star, Notebook, Loader2, Droplets, Globe, Flower, Beaker, StarIcon, Share2, ListTree, Sparkles } from 'lucide-react';
 import { format, addDays } from 'date-fns';
 
 import useLocalStorage from '@/hooks/use-local-storage';
@@ -13,8 +13,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
-import CareSummary from './care-summary';
-import RelatedPlants from './related-plants';
 import { Badge } from '../ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 import { useToast } from '@/hooks/use-toast';
@@ -35,7 +33,7 @@ function InfoRow({ icon, label, value }: { icon: React.ReactNode; label: string;
   );
 }
 
-function Suggestions({ suggestions }: { suggestions: PlantSuggestion[] }) {
+function OtherSuggestions({ suggestions }: { suggestions?: PlantSuggestion[] }) {
   if (!suggestions || suggestions.length === 0) return null;
   
   return (
@@ -307,12 +305,39 @@ export default function PlantDetailsView({ id }: { id: string }) {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-               <Suspense fallback={<InfoCardSkeleton title="Care Summary" />}>
-                 {scan.careTips && <CareSummary careTips={scan.careTips} />}
-               </Suspense>
-               <Suspense fallback={<InfoCardSkeleton title="Related Plants" />}>
-                 <RelatedPlants plantName={scan.commonName} photoDataUri={scan.image} />
-               </Suspense>
+              {scan.careSummary && (
+                <div>
+                  <Accordion type="single" collapsible defaultValue="item-1">
+                    <AccordionItem value="item-1">
+                      <AccordionTrigger className="font-semibold text-lg text-foreground/80">
+                          <div className="flex items-center gap-2">
+                              <Sparkles className="h-5 w-5 text-accent"/>
+                              AI Care Summary
+                          </div>
+                      </AccordionTrigger>
+                      <AccordionContent className="text-base text-foreground/90">
+                          {scan.careSummary}
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </div>
+              )}
+               {scan.suggestions && scan.suggestions.length > 0 && (
+                <div>
+                  <h3 className="font-semibold text-lg mb-2 flex items-center gap-2 text-foreground/80">
+                    <ListTree className="h-5 w-5 text-accent"/>
+                    Related Plants
+                  </h3>
+                  <ul className="space-y-2">
+                    {scan.suggestions.map((plant, index) => (
+                      <li key={index} className="flex items-center gap-3">
+                        <Flower className="h-4 w-4 text-primary/70"/>
+                        <span className="text-foreground/90">{plant}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+               )}
             </CardContent>
           </Card>
 
@@ -338,13 +363,11 @@ export default function PlantDetailsView({ id }: { id: string }) {
             </CardContent>
           </Card>
           
-          {scan.suggestions && scan.suggestions.length > 0 && (
-            <Card>
-              <CardContent className="p-6">
-                <Suggestions suggestions={scan.suggestions} />
-              </CardContent>
-            </Card>
-          )}
+          <Card>
+            <CardContent className="p-6">
+              <OtherSuggestions suggestions={scan.otherSuggestions} />
+            </CardContent>
+          </Card>
 
           <Card>
             <CardHeader>
@@ -401,16 +424,3 @@ export default function PlantDetailsView({ id }: { id: string }) {
     </div>
   );
 }
-
-const InfoCardSkeleton = ({title}: {title: string}) => (
-  <div>
-    <h3 className="font-semibold text-lg mb-2 text-foreground/80">{title}</h3>
-    <div className="space-y-2">
-      <Skeleton className="h-4 w-full" />
-      <Skeleton className="h-4 w-full" />
-      <Skeleton className="h-4 w-4/5" />
-    </div>
-  </div>
-);
-
-    

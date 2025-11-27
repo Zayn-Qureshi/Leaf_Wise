@@ -14,6 +14,7 @@ import { z } from 'genkit';
 const DiagnoseAndIdentifyPlantInputSchema = z.object({
   commonName: z.string().describe('The common name of the identified plant.'),
   scientificName: z.string().describe('The scientific name of the plant.'),
+  photoDataUri: z.string().describe('A photo of the plant, as a data URI.'),
 });
 export type DiagnoseAndIdentifyPlantInput = z.infer<typeof DiagnoseAndIdentifyPlantInputSchema>;
 
@@ -21,6 +22,7 @@ export type DiagnoseAndIdentifyPlantInput = z.infer<typeof DiagnoseAndIdentifyPl
 const DiagnoseAndIdentifyPlantOutputSchema = z.object({
     isHealthy: z.boolean().describe('Whether or not the plant is healthy.'),
     diagnosis: z.string().describe("A detailed diagnosis of the plant's health, including comprehensive care tips covering watering, sunlight, soil, and fertilization."),
+    careSummary: z.string().describe("A concise summary of the plant care tips, easy to understand."),
     plantType: z.string().describe("The plant's category (e.g., Indoor, Outdoor, Tree, Shrub, Flower)."),
     toxicity: z.string().describe("Information on the plant's toxicity to humans and pets. State if it's non-toxic."),
     growthHabit: z.string().describe("The typical growth habit of the plant (e.g., Bushy, Vining, Upright)."),
@@ -28,6 +30,7 @@ const DiagnoseAndIdentifyPlantOutputSchema = z.object({
     floweringPeriod: z.string().describe("The typical time of year the plant is expected to flower, if applicable."),
     propagationTips: z.string().describe("Tips on how to propagate the plant."),
     funFact: z.string().describe("An interesting and fun fact about the plant."),
+    suggestions: z.array(z.string()).describe('An array of 3-5 visually similar or related plant species names.'),
 });
 export type DiagnoseAndIdentifyPlantOutput = z.infer<typeof DiagnoseAndIdentifyPlantOutputSchema>;
 
@@ -38,15 +41,19 @@ const prompt = ai.definePrompt({
     output: { schema: DiagnoseAndIdentifyPlantOutputSchema },
     prompt: `You are an expert botanist. A plant has been identified as {{commonName}} ({{scientificName}}). 
     
-    Based on this identification, provide the following information:
+    Based on this identification and the provided photo, provide the following information:
     1. A detailed diagnosis of the plant's health and comprehensive care tips (watering, sunlight, soil, fertilization).
-    2. The plant's type or category (e.g., Indoor, Outdoor, Tree, Shrub, Flower).
-    3. Toxicity information for pets and humans.
-    4. The plant's typical growth habit (e.g., Bushy, Vining, Upright).
-    5. The geographical origin of the plant.
-    6. The plant's typical flowering period.
-    7. Tips on how to propagate the plant.
-    8. A fun, interesting fact about the plant.
+    2. A concise, easy-to-understand summary of the care tips.
+    3. The plant's type or category (e.g., Indoor, Outdoor, Tree, Shrub, Flower).
+    4. Toxicity information for pets and humans.
+    5. The plant's typical growth habit (e.g., Bushy, Vining, Upright).
+    6. The geographical origin of the plant.
+    7. The plant's typical flowering period.
+    8. Tips on how to propagate the plant.
+    9. A fun, interesting fact about the plant.
+    10. A list of 3-5 other visually similar plants or plants that are often found in the same family or environment.
+
+    Photo: {{media url=photoDataUri}}
 
     For the health assessment, assume the plant is healthy unless common issues for this species are obvious.
     `,

@@ -45,7 +45,7 @@ async function callPlantNetApi(imageDataUri: string) {
 
 export async function identifyPlant(
   imageDataUri: string
-): Promise<Omit<PlantScan, 'id' | 'image' | 'timestamp'>> {
+): Promise<Omit<PlantScan, 'id' | 'image' | 'timestamp' | 'isFavorite' | 'notes' | 'reminder'>> {
   if (!imageDataUri || !imageDataUri.startsWith('data:image')) {
     throw new Error('A valid image data URI is required for identification.');
   }
@@ -64,7 +64,7 @@ export async function identifyPlant(
     confidence: bestMatch.score,
   };
 
-  const suggestions: PlantSuggestion[] = results.slice(1, 4).map((result: any) => ({
+  const otherSuggestions: PlantSuggestion[] = results.slice(1, 4).map((result: any) => ({
     commonName: result.species.commonNames?.[0] || 'Unknown',
     scientificName: result.species.scientificNameWithoutAuthor,
     confidence: result.score,
@@ -73,18 +73,29 @@ export async function identifyPlant(
   const aiResult = await diagnoseAndIdentifyPlant({
     commonName: identification.commonName,
     scientificName: identification.scientificName,
+    photoDataUri: imageDataUri,
+  });
+
+  // Combine AI-generated suggestions with PlantNet suggestions, avoiding duplicates
+  const combinedSuggestions = [...aiResult.suggestions];
+  otherSuggestions.forEach(pnetSugg => {
+    if (!combinedSuggestions.find(s => s.toLowerCase() === pnetSugg.commonName.toLowerCase())) {
+        combinedSuggestions.push(pnetSugg.commonName);
+    }
   });
 
   return {
     ...identification,
+    otherSuggestions: otherSuggestions,
     careTips: aiResult.diagnosis,
+    careSummary: aiResult.careSummary,
     plantType: aiResult.plantType,
     toxicity: aiResult.toxicity,
     growthHabit: aiResult.growthHabit,
-    suggestions,
     origin: aiResult.origin,
     floweringPeriod: aiResult.floweringPeriod,
     propagationTips: aiResult.propagationTips,
     funFact: aiResult.funFact,
+    suggestions: combinedSuggestions.slice(0, 5), // Limit to 5 suggestions
   };
 }

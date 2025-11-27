@@ -25,7 +25,8 @@ export interface PlantScan {
   toxicity?: string;
   growthHabit?: string;
   careSummary?: string;
-  suggestions?: PlantSuggestion[];
+  suggestions?: string[];
+  otherSuggestions?: PlantSuggestion[];
   origin?: string;
   floweringPeriod?: string;
   propagationTips?: string;
