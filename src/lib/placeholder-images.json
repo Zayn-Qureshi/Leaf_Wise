@@ -23,6 +23,12 @@
       "description": "A boston fern in a pot.",
       "imageUrl": "https://images.unsplash.com/photo-1717485172349-b921181b4107?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxmZXJuJTIwcGxhbnR8ZW58MHx8fHwxNzY0MTU2OTk5fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "fern plant"
+    },
+    {
+      "id": "snake-plant",
+      "description": "A snake plant in a stylish pot.",
+      "imageUrl": "https://images.unsplash.com/photo-1593959842039-952a1927c945?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzbmFrZSUyMHBsYW50fGVufDB8fHx8MTY4OTU5ODgzMnww&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "snake plant"
     }
   ]
 }
