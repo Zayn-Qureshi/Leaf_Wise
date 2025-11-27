@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Camera, Upload, Loader2, Sparkles, AlertCircle, X, Stethoscope } from 'lucide-react';
+import { Camera, Upload, Loader2, Sparkles, AlertCircle, X } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,13 +13,11 @@ import useLocalStorage from '@/hooks/use-local-storage';
 import { identifyPlant } from '@/lib/actions';
 import type { PlantScan } from '@/lib/types';
 import { HISTORY_STORAGE_KEY } from '@/lib/constants';
-import HealthCheck from './health-check';
 
 export default function PlantIdentifier() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isHealthCheckOpen, setIsHealthCheckOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const { toast } = useToast();
@@ -154,19 +152,8 @@ export default function PlantIdentifier() {
               </Alert>
             )}
           </CardContent>
-          <div className="border-t p-4 sm:p-6">
-             <Button 
-                variant="outline" 
-                className="w-full" 
-                onClick={() => setIsHealthCheckOpen(true)}
-              >
-                <Stethoscope className="mr-2 h-5 w-5 text-blue-500"/>
-                Run a Plant Health Check
-              </Button>
-          </div>
         </Card>
       </div>
-      <HealthCheck isOpen={isHealthCheckOpen} onOpenChange={setIsHealthCheckOpen} />
     </>
   );
 }
