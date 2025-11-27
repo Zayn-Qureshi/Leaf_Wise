@@ -86,3 +86,16 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .leafy-background {
+    background-color: hsl(var(--background));
+    opacity: 1;
+    background-image: radial-gradient(hsl(var(--primary) / 0.05) 1px, transparent 1px);
+    background-size: 16px 16px;
+  }
+
+  .dark .leafy-background {
+    background-image: radial-gradient(hsl(var(--primary) / 0.1) 1px, transparent 1px);
+  }
+}
