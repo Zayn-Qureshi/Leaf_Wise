@@ -34,7 +34,11 @@ export default function RootLayout({
       <body className={cn('min-h-screen bg-background font-body antialiased', ptSans.variable)}>
         <div className="relative flex min-h-screen flex-col">
           <Header />
-          <main className={cn('flex-1', !isHomePage && 'leafy-background')}>{children}</main>
+          <main className="flex-1">
+            <div className={cn(!isHomePage && 'leafy-background')}>
+              {children}
+            </div>
+          </main>
         </div>
         <Toaster />
       </body>
