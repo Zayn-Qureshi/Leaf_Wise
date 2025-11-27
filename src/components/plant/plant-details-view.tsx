@@ -246,7 +246,7 @@ export default function PlantDetailsView({ id }: { id: string }) {
               <Image src={scan.image} alt={scan.commonName} fill style={{ objectFit: 'cover' }} />
             </div>
           </Card>
-
+          
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-xl">
@@ -346,7 +346,7 @@ export default function PlantDetailsView({ id }: { id: string }) {
             </CardHeader>
             <CardContent className="space-y-6">
                <Suspense fallback={<InfoCardSkeleton title="Care Summary" />}>
-                 <CareSummary careTips={scan.careTips} />
+                 {scan.careTips && <CareSummary careTips={scan.careTips} />}
                </Suspense>
                <Suspense fallback={<InfoCardSkeleton title="Related Plants" />}>
                  <RelatedPlants plantName={scan.commonName} photoDataUri={scan.image} />
@@ -400,34 +400,40 @@ export default function PlantDetailsView({ id }: { id: string }) {
             </CardContent>
           </Card>
           
-          <Card>
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-xl"><Beaker className="text-primary"/> Propagation</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <p className="text-muted-foreground">{scan.propagationTips}</p>
-            </CardContent>
-          </Card>
+          {scan.propagationTips && (
+            <Card>
+              <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-xl"><Beaker className="text-primary"/> Propagation</CardTitle>
+              </CardHeader>
+              <CardContent>
+                  <p className="text-muted-foreground">{scan.propagationTips}</p>
+              </CardContent>
+            </Card>
+          )}
 
-          <Card className="bg-accent/10 border-accent/30">
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-xl text-accent/90"><StarIcon className="text-accent"/> Fun Fact</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <p className="text-accent/90 font-medium">{scan.funFact}</p>
-            </CardContent>
-          </Card>
+          {scan.funFact && (
+            <Card className="bg-accent/10 border-accent/30">
+              <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-xl text-accent/90"><StarIcon className="text-accent"/> Fun Fact</CardTitle>
+              </CardHeader>
+              <CardContent>
+                  <p className="text-accent/90 font-medium">{scan.funFact}</p>
+              </CardContent>
+            </Card>
+          )}
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-xl"><Leaf className="text-primary"/> Full Care Instructions</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="prose prose-sm dark:prose-invert max-w-none whitespace-pre-wrap font-body text-foreground">
-                {scan.careTips}
-              </div>
-            </CardContent>
-          </Card>
+          {scan.careTips && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-xl"><Leaf className="text-primary"/> Full Care Instructions</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="prose prose-sm dark:prose-invert max-w-none whitespace-pre-wrap font-body text-foreground">
+                  {scan.careTips}
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </div>
@@ -444,5 +450,7 @@ const InfoCardSkeleton = ({title}: {title: string}) => (
     </div>
   </div>
 );
+
+    
 
     
