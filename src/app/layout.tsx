@@ -1,11 +1,9 @@
-'use client';
-
 import { PT_Sans } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import { Header } from '@/components/layout/header';
-import { usePathname } from 'next/navigation';
+import { PageWrapper } from '@/components/layout/page-wrapper';
 
 const ptSans = PT_Sans({
   subsets: ['latin'],
@@ -18,9 +16,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pathname = usePathname();
-  const isHomePage = pathname === '/';
-
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -34,11 +29,9 @@ export default function RootLayout({
       <body className={cn('min-h-screen bg-background font-body antialiased', ptSans.variable)}>
         <div className="relative flex min-h-screen flex-col">
           <Header />
-          <main className="flex-1">
-            <div className={cn(!isHomePage && 'leafy-background')}>
-              {children}
-            </div>
-          </main>
+          <PageWrapper>
+            {children}
+          </PageWrapper>
         </div>
         <Toaster />
       </body>
