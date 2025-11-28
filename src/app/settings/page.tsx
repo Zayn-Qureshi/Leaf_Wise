@@ -39,7 +39,7 @@ function AboutSection() {
         to help you identify plants and learn how to care for them.
       </p>
       <p>
-        Using advanced AI and the powerful Pl@ntNet API, you can simply snap a
+        Using advanced AI powered by <strong>Google Gemini</strong>, you can simply snap a
         photo of a plant, and LeafWise will tell you what it is, along with
         detailed care instructions and other useful insights.
       </p>
@@ -58,9 +58,8 @@ function FaqSection() {
         <AccordionTrigger>How does plant identification work?</AccordionTrigger>
         <AccordionContent>
           LeafWise uses your phone's camera or an uploaded image to identify
-          plants. We send the image to the Pl@ntNet API, a powerful plant
-          identification service. Then, our own AI provides additional details
-          like care tips and related species.
+          plants. We send the image to Google's advanced AI models to analyze it
+          and provide details like care tips and related species.
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-2">
@@ -111,11 +110,11 @@ export default function SettingsPage() {
     }
 
     if (Notification.permission === 'granted') {
-        toast({
-            title: 'Permissions Granted',
-            description: 'You have already granted notification permissions.',
-        });
-        return;
+      toast({
+        title: 'Permissions Granted',
+        description: 'You have already granted notification permissions.',
+      });
+      return;
     }
 
     const permission = await Notification.requestPermission();
@@ -125,52 +124,61 @@ export default function SettingsPage() {
         description: 'You will now receive watering reminders.',
       });
     } else {
-        toast({
-            variant: 'destructive',
-            title: 'Permissions Denied',
-            description: 'You will not receive notifications unless you enable them in your browser settings.',
-        });
+      toast({
+        variant: 'destructive',
+        title: 'Permissions Denied',
+        description: 'You will not receive notifications unless you enable them in your browser settings.',
+      });
     }
   };
 
   return (
     <div className="container mx-auto max-w-2xl px-4 py-8">
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-primary sm:text-4xl font-headline">
-          Settings
-        </h1>
-        <p className="mt-2 text-lg text-muted-foreground">
-          Manage your app settings and data.
-        </p>
+      <div className="mb-12 text-center relative">
+        <div className="absolute inset-0 gradient-subtle rounded-3xl blur-3xl opacity-30 -z-10" />
+        <div className="relative py-8 px-4">
+          <h1 className="text-4xl font-bold tracking-tight text-primary sm:text-5xl font-headline mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            Settings
+          </h1>
+          <p className="mt-3 text-xl text-muted-foreground">
+            Manage your app settings and data.
+          </p>
+        </div>
       </div>
 
       <div className="space-y-6">
-        <Card className="shadow-md">
+        <Card className="shadow-md card-hover border-primary/10">
           <CardHeader>
-            <CardTitle>App Settings</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <Bell className="h-5 w-5 text-primary" />
+              App Settings
+            </CardTitle>
             <CardDescription>
               Configure notifications and other application preferences.
             </CardDescription>
           </CardHeader>
           <CardContent>
-             <div className="flex items-center justify-between rounded-lg border p-4">
-                <div>
-                    <h3 className="font-semibold">Enable Notifications</h3>
-                    <p className="text-sm text-muted-foreground">
-                    Allow the app to send you watering reminders.
-                    </p>
-                </div>
-                <Button onClick={handleRequestNotificationPermission}>
-                    <Bell className="mr-2 h-4 w-4" /> Allow
-                </Button>
+            <div className="flex items-center justify-between rounded-lg border p-4">
+              <div>
+                <h3 className="font-semibold">Enable Notifications</h3>
+                <p className="text-sm text-muted-foreground">
+                  Allow the app to send you watering reminders.
+                </p>
+              </div>
+              <Button onClick={handleRequestNotificationPermission}>
+                <Bell className="mr-2 h-4 w-4" /> Allow
+              </Button>
             </div>
           </CardContent>
         </Card>
 
 
-        <Card className="shadow-md">
+        <Card className="shadow-md card-hover border-primary/10">
           <CardHeader>
-            <CardTitle>Data Management</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <Trash2 className="h-5 w-5 text-destructive" />
+              Data Management
+            </CardTitle>
             <CardDescription>
               Manage your saved application data. Be careful, these actions
               cannot be undone.
@@ -223,7 +231,7 @@ export default function SettingsPage() {
 
         <Accordion type="multiple" className="space-y-6">
           <AccordionItem value="about">
-            <Card className="shadow-md">
+            <Card className="shadow-md card-hover border-primary/10">
               <AccordionTrigger className="p-6 text-lg font-semibold w-full hover:no-underline [&[data-state=open]>svg]:-rotate-180">
                 <div className="flex items-center gap-3">
                   <Info />
@@ -237,7 +245,7 @@ export default function SettingsPage() {
           </AccordionItem>
 
           <AccordionItem value="faq">
-            <Card className="shadow-md">
+            <Card className="shadow-md card-hover border-primary/10">
               <AccordionTrigger className="p-6 text-lg font-semibold w-full hover:no-underline [&[data-state=open]>svg]:-rotate-180">
                 <div className="flex items-center gap-3">
                   <HelpCircle />

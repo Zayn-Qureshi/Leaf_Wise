@@ -42,7 +42,7 @@ export default function MyPlantsGrid() {
       description: 'The plant has been removed from your history.',
     });
   };
-  
+
   const toggleFavorite = (id: string) => {
     const newHistory = history.map(scan => {
       if (scan.id === id) {
@@ -76,27 +76,32 @@ export default function MyPlantsGrid() {
 
   if (favoritePlants.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-12 text-center">
-        <Heart className="mx-auto h-12 w-12 text-muted-foreground" />
-        <h3 className="mt-4 text-xl font-semibold text-foreground">No Favorite Plants Yet</h3>
-        <p className="mt-2 text-base text-muted-foreground">Favorite a plant from your history or add one manually.</p>
-        <div className="mt-6 flex gap-4">
-          <Button asChild>
-            <Link href="/history">View History</Link>
-          </Button>
-          <Dialog open={isAddPlantOpen} onOpenChange={setAddPlantOpen}>
-            <DialogTrigger asChild>
-              <Button variant="secondary">
-                <PlusCircle className="mr-2 h-4 w-4" /> Add a Plant
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Add a New Plant</DialogTitle>
-              </DialogHeader>
-              <AddPlantForm onPlantAdded={handlePlantAdded} />
-            </DialogContent>
-          </Dialog>
+      <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-primary/30 p-16 text-center relative overflow-hidden">
+        <div className="absolute inset-0 gradient-subtle opacity-20" />
+        <div className="relative z-10">
+          <div className="mx-auto h-24 w-24 rounded-full bg-primary/10 flex items-center justify-center mb-6">
+            <Heart className="h-12 w-12 text-primary" />
+          </div>
+          <h3 className="text-2xl font-bold text-foreground mb-3">No Favorite Plants Yet</h3>
+          <p className="text-base text-muted-foreground mb-8 max-w-md">Start building your plant collection by favoriting plants from your history or adding them manually.</p>
+          <div className="flex gap-4 justify-center">
+            <Button asChild size="lg">
+              <Link href="/history">View History</Link>
+            </Button>
+            <Dialog open={isAddPlantOpen} onOpenChange={setAddPlantOpen}>
+              <DialogTrigger asChild>
+                <Button variant="default" size="lg" className="gradient-primary text-white">
+                  <PlusCircle className="mr-2 h-4 w-4" /> Add a Plant
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Add a New Plant</DialogTitle>
+                </DialogHeader>
+                <AddPlantForm onPlantAdded={handlePlantAdded} />
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
       </div>
     );
@@ -121,7 +126,7 @@ export default function MyPlantsGrid() {
       </div>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {favoritePlants.map(scan => (
-          <Card key={scan.id} className="flex flex-col overflow-hidden shadow-md transition-shadow hover:shadow-xl">
+          <Card key={scan.id} className="flex flex-col overflow-hidden shadow-md card-hover border-primary/10">
             <CardHeader className="p-0 relative">
               <Link href={`/plant/${scan.id}`} className="block">
                 <div className="aspect-square relative w-full">
@@ -134,7 +139,7 @@ export default function MyPlantsGrid() {
                   />
                 </div>
               </Link>
-               <Button
+              <Button
                 variant="ghost"
                 size="icon"
                 className={cn(
@@ -153,8 +158,8 @@ export default function MyPlantsGrid() {
                   Confidence: {Math.round(scan.confidence * 100)}%
                 </Badge>
               )}
-               {scan.confidence === 1 && (
-                 <Badge variant="secondary" className="mb-2 bg-green-100 text-green-800">
+              {scan.confidence === 1 && (
+                <Badge variant="secondary" className="mb-2 bg-green-100 text-green-800">
                   Manually Added
                 </Badge>
               )}
@@ -170,7 +175,7 @@ export default function MyPlantsGrid() {
                 <Calendar className="h-4 w-4" />
                 <span>{formatDistanceToNow(new Date(scan.timestamp), { addSuffix: true })}</span>
               </div>
-              
+
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive">

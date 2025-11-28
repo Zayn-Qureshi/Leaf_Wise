@@ -32,7 +32,7 @@ export default function HistoryList() {
   const handleDelete = (id: string) => {
     setHistory(prevHistory => prevHistory.filter(scan => scan.id !== id));
   };
-  
+
   const toggleFavorite = (id: string) => {
     const newHistory = history.map(scan => {
       if (scan.id === id) {
@@ -51,13 +51,20 @@ export default function HistoryList() {
 
   if (history.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-12 text-center">
-        <Leaf className="mx-auto h-12 w-12 text-muted-foreground" />
-        <h3 className="mt-4 text-xl font-semibold text-foreground">No History Yet</h3>
-        <p className="mt-2 text-base text-muted-foreground">Start identifying plants to see your history here.</p>
-        <Button asChild className="mt-6">
-          <Link href="/">Identify a Plant</Link>
-        </Button>
+      <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-primary/30 p-16 text-center relative overflow-hidden">
+        <div className="absolute inset-0 gradient-subtle opacity-20" />
+        <div className="relative z-10">
+          <div className="mx-auto h-24 w-24 rounded-full bg-primary/10 flex items-center justify-center mb-6">
+            <Leaf className="h-12 w-12 text-primary" />
+          </div>
+          <h3 className="text-2xl font-bold text-foreground mb-3">No History Yet</h3>
+          <p className="text-base text-muted-foreground mb-8 max-w-md">
+            Start your plant identification journey! Discover and learn about the amazing plants around you.
+          </p>
+          <Button asChild size="lg" className="gradient-primary text-white">
+            <Link href="/">Identify Your First Plant</Link>
+          </Button>
+        </div>
       </div>
     );
   }
@@ -65,7 +72,7 @@ export default function HistoryList() {
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {history.map(scan => (
-        <Card key={scan.id} className="flex flex-col overflow-hidden shadow-md transition-shadow hover:shadow-xl">
+        <Card key={scan.id} className="flex flex-col overflow-hidden shadow-md card-hover border-primary/10">
           <CardHeader className="p-0 relative">
             <Link href={`/plant/${scan.id}`} className="block">
               <div className="aspect-square relative w-full">
@@ -78,7 +85,7 @@ export default function HistoryList() {
                 />
               </div>
             </Link>
-             <Button
+            <Button
               variant="ghost"
               size="icon"
               className={cn(
@@ -107,7 +114,7 @@ export default function HistoryList() {
               <Calendar className="h-4 w-4" />
               <span>{formatDistanceToNow(new Date(scan.timestamp), { addSuffix: true })}</span>
             </div>
-            
+
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive">

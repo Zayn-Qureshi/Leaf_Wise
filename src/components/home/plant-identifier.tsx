@@ -29,10 +29,47 @@ export default function PlantIdentifier() {
       setError(null);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result as string);
+        // Compress image before setting preview
+        compressImage(reader.result as string, (compressed) => {
+          setImagePreview(compressed);
+        });
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const compressImage = (dataUrl: string, callback: (compressed: string) => void) => {
+    const img = new window.Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+
+      // Set max dimensions
+      const MAX_WIDTH = 1024;
+      const MAX_HEIGHT = 1024;
+      let width = img.width;
+      let height = img.height;
+
+      if (width > height) {
+        if (width > MAX_WIDTH) {
+          height *= MAX_WIDTH / width;
+          width = MAX_WIDTH;
+        }
+      } else {
+        if (height > MAX_HEIGHT) {
+          width *= MAX_HEIGHT / height;
+          height = MAX_HEIGHT;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      ctx?.drawImage(img, 0, 0, width, height);
+
+      // Compress to JPEG with 0.8 quality
+      callback(canvas.toDataURL('image/jpeg', 0.8));
+    };
+    img.src = dataUrl;
   };
 
   const handleIdentify = async () => {

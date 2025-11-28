@@ -8,7 +8,7 @@ export function PlantGrid({ plants }: { plants: ImagePlaceholder[] }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {plants.map(plant => (
-        <Card key={plant.id} className="overflow-hidden shadow-md transition-shadow hover:shadow-xl group">
+        <Card key={plant.id} className="overflow-hidden shadow-md card-hover border-primary/10 group">
           <CardHeader className="p-0">
             <div className="aspect-square relative w-full">
               <Image

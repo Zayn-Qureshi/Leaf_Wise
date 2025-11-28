@@ -7,7 +7,6 @@ import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet';
-import { Logo } from './logo';
 import { cn } from '@/lib/utils';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
@@ -46,7 +45,10 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
-        <Logo />
+        <Link href="/" className="flex items-center gap-2">
+          <Leaf className="h-6 w-6 text-primary" />
+          <span className="text-xl font-bold text-primary">LeafWise</span>
+        </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden items-center gap-4 md:flex">
@@ -65,21 +67,24 @@ export function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-full max-w-xs bg-background p-0">
-               <SheetHeader className="flex flex-row items-center justify-between border-b p-4">
-                  <Logo />
-                  <SheetClose asChild>
-                     <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)}>
-                        <X className="h-6 w-6" />
-                        <span className="sr-only">Close menu</span>
-                     </Button>
-                  </SheetClose>
-                  <VisuallyHidden>
-                    <SheetTitle>Main Menu</SheetTitle>
-                    <SheetDescription>
-                      Navigate through the LeafWise application.
-                    </SheetDescription>
-                  </VisuallyHidden>
-                </SheetHeader>
+              <SheetHeader className="flex flex-row items-center justify-between border-b p-4">
+                <Link href="/" className="flex items-center gap-2">
+                  <Leaf className="h-6 w-6 text-primary" />
+                  <span className="text-xl font-bold text-primary">LeafWise</span>
+                </Link>
+                <SheetClose asChild>
+                  <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)}>
+                    <X className="h-6 w-6" />
+                    <span className="sr-only">Close menu</span>
+                  </Button>
+                </SheetClose>
+                <VisuallyHidden>
+                  <SheetTitle>Main Menu</SheetTitle>
+                  <SheetDescription>
+                    Navigate through the LeafWise application.
+                  </SheetDescription>
+                </VisuallyHidden>
+              </SheetHeader>
               <div className="flex h-full flex-col">
                 <nav className="flex flex-col gap-4 p-4">
                   {navItems.map(item => (
