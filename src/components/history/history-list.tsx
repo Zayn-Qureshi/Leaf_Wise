@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
-import { Leaf, Trash2, Calendar, Star, AlertTriangle } from 'lucide-react';
+import { Leaf, Trash2, Calendar, Star } from 'lucide-react';
 
 import useLocalStorage from '@/hooks/use-local-storage';
 import { HISTORY_STORAGE_KEY } from '@/lib/constants';

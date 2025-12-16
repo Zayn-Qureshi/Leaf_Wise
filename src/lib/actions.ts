@@ -1,7 +1,7 @@
 'use server';
 
 import { diagnoseAndIdentifyPlant } from '@/ai/flows/diagnose-and-identify-plant-flow';
-import type { PlantScan, PlantSuggestion } from './types';
+import type { PlantScan } from './types';
 
 export async function identifyPlant(
   imageDataUri: string

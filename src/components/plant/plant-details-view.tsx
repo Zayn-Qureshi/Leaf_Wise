@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, Calendar, HelpCircle, Leaf, Percent, BrainCircuit, Type, ShieldAlert, GitCommitHorizontal, Lightbulb, Star, Notebook, Loader2, Droplets, Globe, Flower, Beaker, StarIcon, Share2, ListTree, Sparkles } from 'lucide-react';
@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Badge } from '../ui/badge';
+
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
