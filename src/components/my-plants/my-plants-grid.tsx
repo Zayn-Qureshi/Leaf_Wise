@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
-import { Heart, Trash2, Calendar, Star, Leaf, PlusCircle } from 'lucide-react';
+import { Heart, Trash2, Calendar, Star, PlusCircle } from 'lucide-react';
 import { useState } from 'react';
 
 import useLocalStorage from '@/hooks/use-local-storage';
@@ -187,7 +187,7 @@ export default function MyPlantsGrid() {
                   <AlertDialogHeader>
                     <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                     <AlertDialogDescription>
-                      This will permanently delete the scan for "{scan.commonName}". This action cannot be undone.
+                      This will permanently delete the scan for &quot;{scan.commonName}&quot;. This action cannot be undone.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
