@@ -73,7 +73,7 @@ export function AddPlantForm({ onPlantAdded }: AddPlantFormProps) {
         <FormField
           control={form.control}
           name="image"
-          render={({ field }) => (
+          render={() => (
             <FormItem>
               <FormLabel>Plant Image</FormLabel>
               <FormControl>
@@ -104,7 +104,7 @@ export function AddPlantForm({ onPlantAdded }: AddPlantFormProps) {
             </FormItem>
           )}
         />
-        
+
         <FormField
           control={form.control}
           name="commonName"
@@ -132,7 +132,7 @@ export function AddPlantForm({ onPlantAdded }: AddPlantFormProps) {
             </FormItem>
           )}
         />
-        
+
         <FormField
           control={form.control}
           name="plantType"
