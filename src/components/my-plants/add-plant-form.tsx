@@ -63,7 +63,11 @@ export function AddPlantForm({ onPlantAdded }: AddPlantFormProps) {
     setIsSubmitting(true);
     // Simulate async operation
     await new Promise(resolve => setTimeout(resolve, 500));
-    onPlantAdded(values);
+    onPlantAdded({
+      ...values,
+      scientificName: values.scientificName || '',
+      careTips: values.careTips || '',
+    });
     setIsSubmitting(false);
   }
 
