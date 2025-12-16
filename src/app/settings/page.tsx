@@ -44,7 +44,7 @@ function AboutSection() {
         detailed care instructions and other useful insights.
       </p>
       <p>
-        Whether you're a seasoned gardener or just starting your plant journey,
+        Whether you&apos;re a seasoned gardener or just starting your plant journey,
         LeafWise is here to help you grow.
       </p>
     </div>
@@ -57,8 +57,8 @@ function FaqSection() {
       <AccordionItem value="item-1">
         <AccordionTrigger>How does plant identification work?</AccordionTrigger>
         <AccordionContent>
-          LeafWise uses your phone's camera or an uploaded image to identify
-          plants. We send the image to Google's advanced AI models to analyze it
+          LeafWise uses your phone&apos;s camera or an uploaded image to identify
+          plants. We send the image to Google&apos;s advanced AI models to analyze it
           and provide details like care tips and related species.
         </AccordionContent>
       </AccordionItem>
@@ -66,7 +66,7 @@ function FaqSection() {
         <AccordionTrigger>Is my data private?</AccordionTrigger>
         <AccordionContent>
           Yes. All of your scan history is stored directly on your device in
-          your browser's local storage. It is never uploaded to our servers.
+          your browser&apos;s local storage. It is never uploaded to our servers.
           Clearing your history from the settings page will permanently delete
           it from your device.
         </AccordionContent>
@@ -77,7 +77,7 @@ function FaqSection() {
         </AccordionTrigger>
         <AccordionContent>
           AI identification is not always 100% perfect. Factors like image
-          quality, lighting, and the plant's maturity can affect accuracy. For
+          quality, lighting, and the plant&apos;s maturity can affect accuracy. For
           best results, use a clear, well-lit photo of a key feature like a leaf
           or flower.
         </AccordionContent>

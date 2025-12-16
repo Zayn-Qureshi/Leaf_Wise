@@ -14,7 +14,7 @@ export default function HistoryPage() {
             Your Plant Diary
           </h1>
           <p className="mt-3 text-xl text-muted-foreground max-w-2xl mx-auto">
-            A beautiful collection of all the plants you've identified on your journey.
+            A beautiful collection of all the plants you&apos;ve identified on your journey.
           </p>
         </div>
       </div>

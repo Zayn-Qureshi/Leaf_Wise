@@ -1,6 +1,6 @@
 import PlantDetailsView from "@/components/plant/plant-details-view";
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
+export async function generateMetadata() {
   // In a real app, you might fetch metadata from a database
   // For now, we'll use a generic title
   return {

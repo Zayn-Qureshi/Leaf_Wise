@@ -31,7 +31,7 @@ export default function Home() {
               Everything You Need to Grow
             </h2>
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-              LeafWise is more than just an identifier. It's your partner in plant care.
+              LeafWise is more than just an identifier. It&apos;s your partner in plant care.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">

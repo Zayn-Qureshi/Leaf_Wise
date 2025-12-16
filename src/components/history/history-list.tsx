@@ -126,7 +126,7 @@ export default function HistoryList() {
                 <AlertDialogHeader>
                   <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    This will permanently delete the scan for "{scan.commonName}". This action cannot be undone.
+                    This will permanently delete the scan for &quot;{scan.commonName}&quot;. This action cannot be undone.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

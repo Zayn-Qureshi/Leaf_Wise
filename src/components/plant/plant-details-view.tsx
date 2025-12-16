@@ -35,31 +35,31 @@ function InfoRow({ icon, label, value }: { icon: React.ReactNode; label: string;
 
 function OtherSuggestions({ suggestions }: { suggestions?: PlantSuggestion[] }) {
   if (!suggestions || suggestions.length === 0) return null;
-  
+
   return (
     <Accordion type="single" collapsible>
-        <AccordionItem value="item-1">
+      <AccordionItem value="item-1">
         <AccordionTrigger className="font-semibold text-lg text-foreground/80">
-            <div className="flex items-center gap-2">
-                <Lightbulb className="h-5 w-5 text-accent"/>
-                Other Possible Matches
-            </div>
+          <div className="flex items-center gap-2">
+            <Lightbulb className="h-5 w-5 text-accent" />
+            Other Possible Matches
+          </div>
         </AccordionTrigger>
         <AccordionContent>
-            <ul className="space-y-3">
+          <ul className="space-y-3">
             {suggestions.map((suggestion, index) => (
-                <li key={index} className="p-3 rounded-md bg-muted/30">
-                    <p className="font-semibold text-primary">{suggestion.commonName}</p>
-                    <p className="text-sm text-muted-foreground italic">{suggestion.scientificName}</p>
-                    <div className="flex items-center gap-2 mt-1">
-                        <Progress value={suggestion.confidence * 100} className="w-24 h-2" />
-                        <span className="text-xs text-muted-foreground">{Math.round(suggestion.confidence * 100)}% match</span>
-                    </div>
-                </li>
+              <li key={index} className="p-3 rounded-md bg-muted/30">
+                <p className="font-semibold text-primary">{suggestion.commonName}</p>
+                <p className="text-sm text-muted-foreground italic">{suggestion.scientificName}</p>
+                <div className="flex items-center gap-2 mt-1">
+                  <Progress value={suggestion.confidence * 100} className="w-24 h-2" />
+                  <span className="text-xs text-muted-foreground">{Math.round(suggestion.confidence * 100)}% match</span>
+                </div>
+              </li>
             ))}
-            </ul>
+          </ul>
         </AccordionContent>
-        </AccordionItem>
+      </AccordionItem>
     </Accordion>
   );
 }
@@ -94,11 +94,11 @@ export default function PlantDetailsView({ id }: { id: string }) {
     });
     setHistory(newHistory);
   };
-  
+
   const handleSaveNotes = () => {
     if (!scan) return;
     setIsSaving(true);
-    
+
     setTimeout(() => {
       const newHistory = history.map(s => {
         if (s.id === id) {
@@ -114,7 +114,7 @@ export default function PlantDetailsView({ id }: { id: string }) {
       });
     }, 500);
   };
-  
+
   const handleSetReminder = (frequency: number) => {
     if (!scan) return;
 
@@ -133,16 +133,16 @@ export default function PlantDetailsView({ id }: { id: string }) {
       s.id === id ? { ...s, reminder: newReminder } : s
     );
     setHistory(newHistory);
-    
+
     const nextWateringDate = addDays(new Date(), frequency);
 
     // This is a simplified client-side notification.
     // A robust solution would use a service worker with push notifications.
     setTimeout(() => {
-        new Notification(`Time to water your ${scan.commonName}!`, {
-            body: `It's been ${frequency} days. Give your plant some love.`,
-            icon: scan.image,
-        });
+      new Notification(`Time to water your ${scan.commonName}!`, {
+        body: `It's been ${frequency} days. Give your plant some love.`,
+        icon: scan.image,
+      });
     }, nextWateringDate.getTime() - Date.now());
 
 
@@ -194,14 +194,14 @@ export default function PlantDetailsView({ id }: { id: string }) {
       <div className="container mx-auto flex h-[80vh] flex-col items-center justify-center text-center">
         <HelpCircle className="h-16 w-16 text-destructive" />
         <h1 className="mt-4 text-3xl font-bold">Scan Not Found</h1>
-        <p className="mt-2 text-lg text-muted-foreground">The plant scan you're looking for doesn't exist or has been deleted.</p>
+        <p className="mt-2 text-lg text-muted-foreground">The plant scan you&apos;re looking for doesn&apos;t exist or has been deleted.</p>
         <Button asChild className="mt-6">
           <Link href="/history">Back to History</Link>
         </Button>
       </div>
     );
   }
-  
+
   const confidenceValue = Math.round(scan.confidence * 100);
 
   return (
@@ -230,7 +230,7 @@ export default function PlantDetailsView({ id }: { id: string }) {
           </Button>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="space-y-6">
           <Card className="overflow-hidden shadow-lg">
@@ -238,17 +238,17 @@ export default function PlantDetailsView({ id }: { id: string }) {
               <Image src={scan.image} alt={scan.commonName} fill style={{ objectFit: 'cover' }} />
             </div>
           </Card>
-          
+
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-xl">
-                <Droplets className="text-primary"/>
+                <Droplets className="text-primary" />
                 Watering Reminder
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-muted-foreground text-sm">
-                Set a reminder to get notified when it's time to water this plant.
+                Set a reminder to get notified when it&apos;s time to water this plant.
               </p>
               <Select onValueChange={(value) => handleSetReminder(Number(value))} defaultValue={scan.reminder?.frequency.toString()}>
                 <SelectTrigger className="w-[180px]">
@@ -261,18 +261,18 @@ export default function PlantDetailsView({ id }: { id: string }) {
                   <SelectItem value="14">Every 14 days</SelectItem>
                 </SelectContent>
               </Select>
-               {scan.reminder && (
-                 <p className="text-sm text-green-600">
-                    Reminder set for every {scan.reminder.frequency} days.
-                 </p>
-               )}
+              {scan.reminder && (
+                <p className="text-sm text-green-600">
+                  Reminder set for every {scan.reminder.frequency} days.
+                </p>
+              )}
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-xl">
-                <Notebook className="text-primary"/>
+                <Notebook className="text-primary" />
                 Personal Notes
               </CardTitle>
             </CardHeader>
@@ -296,11 +296,11 @@ export default function PlantDetailsView({ id }: { id: string }) {
               </Button>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-xl">
-                <BrainCircuit className="text-primary"/>
+                <BrainCircuit className="text-primary" />
                 AI Generated Insights
               </CardTitle>
             </CardHeader>
@@ -310,34 +310,34 @@ export default function PlantDetailsView({ id }: { id: string }) {
                   <Accordion type="single" collapsible defaultValue="item-1">
                     <AccordionItem value="item-1">
                       <AccordionTrigger className="font-semibold text-lg text-foreground/80">
-                          <div className="flex items-center gap-2">
-                              <Sparkles className="h-5 w-5 text-accent"/>
-                              AI Care Summary
-                          </div>
+                        <div className="flex items-center gap-2">
+                          <Sparkles className="h-5 w-5 text-accent" />
+                          AI Care Summary
+                        </div>
                       </AccordionTrigger>
                       <AccordionContent className="text-base text-foreground/90">
-                          {scan.careSummary}
+                        {scan.careSummary}
                       </AccordionContent>
                     </AccordionItem>
                   </Accordion>
                 </div>
               )}
-               {scan.suggestions && scan.suggestions.length > 0 && (
+              {scan.suggestions && scan.suggestions.length > 0 && (
                 <div>
                   <h3 className="font-semibold text-lg mb-2 flex items-center gap-2 text-foreground/80">
-                    <ListTree className="h-5 w-5 text-accent"/>
+                    <ListTree className="h-5 w-5 text-accent" />
                     Related Plants
                   </h3>
                   <ul className="space-y-2">
                     {scan.suggestions.map((plant, index) => (
                       <li key={index} className="flex items-center gap-3">
-                        <Flower className="h-4 w-4 text-primary/70"/>
+                        <Flower className="h-4 w-4 text-primary/70" />
                         <span className="text-foreground/90">{plant}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
-               )}
+              )}
             </CardContent>
           </Card>
 
@@ -355,14 +355,14 @@ export default function PlantDetailsView({ id }: { id: string }) {
               </div>
               <div>
                 <div className="flex justify-between items-center mb-1">
-                  <span className="text-sm font-medium text-foreground flex items-center gap-1.5"><Percent className="h-4 w-4"/> Confidence</span>
+                  <span className="text-sm font-medium text-foreground flex items-center gap-1.5"><Percent className="h-4 w-4" /> Confidence</span>
                   <span className="text-sm font-bold text-primary">{confidenceValue}%</span>
                 </div>
                 <Progress value={confidenceValue} aria-label={`${confidenceValue}% confidence`} />
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-6">
               <OtherSuggestions suggestions={scan.otherSuggestions} />
@@ -372,7 +372,7 @@ export default function PlantDetailsView({ id }: { id: string }) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-xl">
-                <Leaf className="text-primary"/>
+                <Leaf className="text-primary" />
                 Plant Details
               </CardTitle>
             </CardHeader>
@@ -384,14 +384,14 @@ export default function PlantDetailsView({ id }: { id: string }) {
               <InfoRow icon={<Flower className="h-5 w-5" />} label="Flowering Period" value={scan.floweringPeriod} />
             </CardContent>
           </Card>
-          
+
           {scan.propagationTips && (
             <Card>
               <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-xl"><Beaker className="text-primary"/> Propagation</CardTitle>
+                <CardTitle className="flex items-center gap-2 text-xl"><Beaker className="text-primary" /> Propagation</CardTitle>
               </CardHeader>
               <CardContent>
-                  <p className="text-muted-foreground">{scan.propagationTips}</p>
+                <p className="text-muted-foreground">{scan.propagationTips}</p>
               </CardContent>
             </Card>
           )}
@@ -399,10 +399,10 @@ export default function PlantDetailsView({ id }: { id: string }) {
           {scan.funFact && (
             <Card className="bg-accent/10 border-accent/30">
               <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-xl text-accent/90"><StarIcon className="text-accent"/> Fun Fact</CardTitle>
+                <CardTitle className="flex items-center gap-2 text-xl text-accent/90"><StarIcon className="text-accent" /> Fun Fact</CardTitle>
               </CardHeader>
               <CardContent>
-                  <p className="text-accent/90 font-medium">{scan.funFact}</p>
+                <p className="text-accent/90 font-medium">{scan.funFact}</p>
               </CardContent>
             </Card>
           )}
@@ -410,7 +410,7 @@ export default function PlantDetailsView({ id }: { id: string }) {
           {scan.careTips && (
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-xl"><Leaf className="text-primary"/> Full Care Instructions</CardTitle>
+                <CardTitle className="flex items-center gap-2 text-xl"><Leaf className="text-primary" /> Full Care Instructions</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="prose prose-sm dark:prose-invert max-w-none whitespace-pre-wrap font-body text-foreground">

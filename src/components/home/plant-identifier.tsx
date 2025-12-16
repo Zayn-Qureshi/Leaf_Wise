@@ -124,7 +124,7 @@ export default function PlantIdentifier() {
                 Identify Your Plant
               </h1>
               <p className="mt-2 text-lg text-muted-foreground">
-                Snap a photo or upload an image to discover your plant's secrets.
+                Snap a photo or upload an image to discover your plant&apos;s secrets.
               </p>
             </div>
           </CardHeader>
@@ -141,7 +141,7 @@ export default function PlantIdentifier() {
               <div className="flex flex-col items-center justify-center space-y-4 rounded-lg border-2 border-dashed border-gray-300 p-12 text-center">
                 <Loader2 className="h-12 w-12 animate-spin text-primary" />
                 <p className="text-lg font-medium text-primary">Identifying your plant...</p>
-                <p className="text-muted-foreground">This may take a moment. We're consulting our digital botanists!</p>
+                <p className="text-muted-foreground">This may take a moment. We&apos;re consulting our digital botanists!</p>
               </div>
             ) : imagePreview ? (
               <div className="space-y-4">
